@@ -15,6 +15,9 @@ helm upgrade --install loki grafana/loki -n logging --version 7.3.0 `
 helm upgrade --install promtail grafana/promtail -n logging --version 6.17.1 `
   -f (Join-Path $infra 'promtail-values.yaml') --wait --timeout 5m
 
+# 대시보드 ConfigMap 을 grafana 설치 전에 생성 (dashboardsConfigMaps 가 참조)
+kubectl apply -f (Join-Path $infra 'grafana-dashboard-sample-app.yaml')
+
 helm upgrade --install grafana grafana/grafana -n monitoring --version 10.5.15 `
   -f (Join-Path $infra 'grafana-values.yaml') --wait --timeout 5m
 

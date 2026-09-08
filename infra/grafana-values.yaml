@@ -4,8 +4,10 @@
 adminUser: admin
 adminPassword: admin
 
+# 재시작해도 비밀번호/수동 변경이 유지되도록 PVC 사용 (local-path)
 persistence:
-  enabled: false
+  enabled: true
+  size: 1Gi
 
 service:
   type: ClusterIP
@@ -22,3 +24,19 @@ datasources:
         isDefault: true
         jsonData:
           maxLines: 1000
+
+# 시작용 대시보드 (sample-app 로그/에러율). ConfigMap: grafana-dashboard-sample-app.yaml
+dashboardProviders:
+  dashboards.yaml:
+    apiVersion: 1
+    providers:
+      - name: default
+        orgId: 1
+        folder: ""
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+dashboardsConfigMaps:
+  default: sample-app-dashboard

@@ -13,7 +13,7 @@
 | 2 | 이미지 빌드 | ✅ | `docker build -t sample-app:0.1.0` → 컨테이너 스모크 테스트 통과 |
 | 3 | Loki (Helm `loki` 7.3.0) | ✅ Running | `loki-0` 2/2, SingleBinary + filesystem PVC 5Gi, svc `loki:3100` |
 | 4 | Promtail (Helm `promtail` 6.17.1) | ✅ Running | DaemonSet `promtail-zs2p6`, pipeline `docker: {}` 로 교체 |
-| 5 | Grafana (Helm `grafana` 10.5.15) | ✅ Running | Loki 데이터소스 프로비저닝, health = OK |
+| 5 | Grafana (Helm `grafana` 10.5.15) | ✅ Running | Loki 데이터소스 + "sample-app logs" 대시보드 프로비저닝, PVC 1Gi(비번/변경 유지), health = OK |
 | 6 | 샘플 앱 배포 (`deploy/sample-app`) | ✅ Running | `kubectl apply -k` → Deployment 2/2, svc `sample-app:80` |
 | 7 | ArgoCD (stable manifests) | ✅ Running | 7개 파드 Running, admin 로그인 토큰 발급 확인 |
 | 8 | 로그 파이프라인 E2E | ✅ 검증 | 앱 → Promtail → Loki → LogQL 조회까지 실제 데이터 확인 |
@@ -110,7 +110,8 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.pas
 | `deploy/argocd/application.yaml` | ArgoCD Application (repoURL 교체 필요) |
 | `infra/loki-values.yaml` | SingleBinary + filesystem |
 | `infra/promtail-values.yaml` | clients URL + `docker` pipeline stage |
-| `infra/grafana-values.yaml` | Loki 데이터소스, adminPassword `admin` |
+| `infra/grafana-values.yaml` | Loki 데이터소스, adminPassword `admin`, PVC 1Gi, 대시보드 프로비저닝 |
+| `infra/grafana-dashboard-sample-app.yaml` | "sample-app logs" 대시보드 ConfigMap (에러/5xx/req·s/p95/추이/로그 7패널) |
 | `scripts/01`~`05`, `99` | 빌드 → 관측성 → 앱 배포 → ArgoCD → port-forward / teardown |
 | `README.md` | 실행 순서 + 검증 |
 | `DOCKER-containers.md` | `docker ps` 항목 설명 |

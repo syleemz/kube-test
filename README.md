@@ -67,16 +67,20 @@ while ($true) {
 
 ### Step 5 — Loki 조회
 
-Grafana http://localhost:3000 (admin/admin) → Explore → Loki:
+Grafana http://localhost:3000 (admin/admin).
 
-```logql
-{namespace="sample-app"}
-{namespace="sample-app"} | json | level="error"
-{namespace="sample-app"} | json | latency_ms > 100
-sum(rate({namespace="sample-app"} | json | level="error" [5m]))
-```
+- **Dashboards → "sample-app logs"**: 에러 수, 5xx, req/s, p95 지연, 레벨/상태별 추이 + 로그 패널이 프로비저닝돼 있음
+  (`infra/grafana-dashboard-sample-app.yaml` ConfigMap → `dashboardsConfigMaps`)
+- **Explore → Loki**: 자유 쿼리
+  ```logql
+  {namespace="sample-app"}
+  {namespace="sample-app"} | json | level="error"
+  {namespace="sample-app"} | json | latency_ms > 100
+  sum(rate({namespace="sample-app"} | json | level="error" [5m]))
+  ```
 
-자세한 Grafana 사용법은 [GRAFANA-logs.md](GRAFANA-logs.md), CLI 는 [LOGS-console.md](LOGS-console.md).
+> 첫 화면(홈)은 비어 있는 게 정상 — 로그는 **Explore** 또는 위 대시보드에서 본다.
+> 자세한 사용법은 [GRAFANA-logs.md](GRAFANA-logs.md), CLI 는 [LOGS-console.md](LOGS-console.md).
 
 ### Step 6~8 — ArgoCD GitOps
 
