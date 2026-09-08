@@ -45,6 +45,13 @@ scripts/                 01~05 실행 + 99 teardown (PowerShell)
 ./scripts/05-port-forward.ps1
 ```
 
+일시 중지 / 재개 (k3s 는 켜둔 채 테스트 스택만):
+```powershell
+./scripts/10-pause.ps1     # 워크로드 전부 replicas=0 (원래 값은 .pause-state.json 에 저장)
+./scripts/11-resume.ps1    # 저장된 값으로 복원
+```
+전체를 내리려면 Rancher Desktop 자체를 종료 — 재실행 시 파드는 자동 재생성됨.
+
 ## 검증 (PLAN-rancher.md Step 대응)
 
 ### Step 4 — 샘플 앱

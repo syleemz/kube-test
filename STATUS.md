@@ -113,6 +113,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.pas
 | `infra/grafana-values.yaml` | Loki 데이터소스, adminPassword `admin`, PVC 1Gi, 대시보드 프로비저닝 |
 | `infra/grafana-dashboard-sample-app.yaml` | "sample-app logs" 대시보드 ConfigMap (에러/5xx/req·s/p95/추이/로그 7패널) |
 | `scripts/01`~`05`, `99` | 빌드 → 관측성 → 앱 배포 → ArgoCD → port-forward / teardown |
+| `scripts/10-pause.ps1` / `11-resume.ps1` | 테스트 스택 일시중지/재개 (replicas 0 ↔ 복원, argocd self-heal 고려해 controller 먼저 정지) |
 | `README.md` | 실행 순서 + 검증 |
 | `DOCKER-containers.md` | `docker ps` 항목 설명 |
 | `PLAN.md` / `PLAN-kind.md` / `PLAN-rancher.md` | 계획서 3종 |

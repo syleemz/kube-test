@@ -3,6 +3,8 @@ npm-debug.log*
 *.tgz
 .DS_Store
 .claude/
+.pause-state.json
+scratch-*
 
 # 로컬 시크릿 (커밋 금지)
 deploy/argocd/repo-secret.yaml
