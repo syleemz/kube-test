@@ -1,0 +1,14 @@
+# grafana/promtail 차트 - DaemonSet 로 노드의 파드 stdout 수집 → Loki push
+# 기본 scrape config(kubernetes-pods)는 유지.
+#
+# Rancher Desktop 의 k3s 는 cri-dockerd 를 쓰므로 /var/log/pods 로그가
+# CRI 텍스트가 아니라 Docker JSON 포맷({"log","stream","time"})이다.
+# → 기본 파이프라인 stage 를 cri 에서 docker 로 바꿔야 래퍼가 벗겨진다.
+# (containerd 런타임이면 이 snippets 블록을 지우고 기본 cri 로 두면 됨)
+
+config:
+  clients:
+    - url: http://loki.logging.svc.cluster.local:3100/loki/api/v1/push
+  snippets:
+    pipelineStages:
+      - docker: {}

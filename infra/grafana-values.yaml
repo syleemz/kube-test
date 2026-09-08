@@ -1,0 +1,24 @@
+# grafana/grafana 차트 - Loki 데이터소스 프로비저닝 (로컬 학습용)
+# Traefik 미설치 환경이라 Ingress 없음. port-forward 로 접근.
+
+adminUser: admin
+adminPassword: admin
+
+persistence:
+  enabled: false
+
+service:
+  type: ClusterIP
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Loki
+        uid: loki
+        type: loki
+        access: proxy
+        url: http://loki.logging.svc.cluster.local:3100
+        isDefault: true
+        jsonData:
+          maxLines: 1000
