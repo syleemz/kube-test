@@ -62,17 +62,13 @@ heartbeat 로그(파드당 1줄/초)가 계속 쌓이는 중 — 필요 없으�
 
 ---
 
-## 4. 남은 작업 (Step 7~8, GitOps — 사용자 수동)
+## 4. GitOps 연결 (Step 7)
 
-1. 이 저장소를 GitHub 퍼블릭 레포로 push
-2. `deploy/argocd/application.yaml` 의 `repoURL` 을 실제 URL 로 수정
-3. 수동 배포분 제거 후 ArgoCD 로 위임:
-   ```powershell
-   kubectl delete -k deploy/sample-app
-   kubectl apply -f deploy/argocd/application.yaml
-   ```
-4. ArgoCD UI(https://localhost:8081, admin) 에서 `sample-app` = Synced + Healthy 확인
-5. E2E:
+- ✅ 저장소: `https://github.com/syleemz/kube-test.git` push 완료
+- ✅ `deploy/argocd/application.yaml` 적용됨 → ArgoCD `sample-app` = **Synced**
+  (`path: deploy/sample-app`, auto-sync + prune + selfHeal)
+
+### 남은 것: E2E 검증 (Step 8)
    - `sample-app:0.2.0` 빌드 → 레포에서 `deployment.yaml` 태그 변경 push → 자동 Sync
    - self-heal: `kubectl -n sample-app scale deploy/sample-app --replicas=5` → 2 로 복귀
    - prune: 레포에서 `service.yaml` 삭제 push → 클러스터에서도 삭제
