@@ -8,14 +8,14 @@ foreach ($ns in 'logging', 'monitoring') {
   kubectl create namespace $ns --dry-run=client -o yaml | kubectl apply -f -
 }
 
-# 2026-09 검증 시점 차트 버전 (드리프트 방지용 고정)
+# chart versions pinned (verified 2026-09) to avoid drift
 helm upgrade --install loki grafana/loki -n logging --version 7.3.0 `
   -f (Join-Path $infra 'loki-values.yaml') --wait --timeout 10m
 
 helm upgrade --install promtail grafana/promtail -n logging --version 6.17.1 `
   -f (Join-Path $infra 'promtail-values.yaml') --wait --timeout 5m
 
-# 대시보드 ConfigMap 을 grafana 설치 전에 생성 (dashboardsConfigMaps 가 참조)
+# create dashboard ConfigMap before grafana install (referenced by dashboardsConfigMaps)
 kubectl apply -f (Join-Path $infra 'grafana-dashboard-sample-app.yaml')
 
 helm upgrade --install grafana grafana/grafana -n monitoring --version 10.5.15 `

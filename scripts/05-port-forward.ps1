@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 
-# 백그라운드 job 으로 3개 서비스 포트포워딩. 셸을 닫으면 job 도 종료됨.
+# port-forward 3 services as background jobs. Jobs end when the shell closes.
 $forwards = @(
   @{ name = 'grafana'; ns = 'monitoring'; svc = 'svc/grafana';      local = 3000; remote = 80 },
   @{ name = 'app';     ns = 'sample-app'; svc = 'svc/sample-app';    local = 8080; remote = 80 },
@@ -24,4 +24,4 @@ Write-Host "Grafana  http://localhost:3000    (admin / admin)"
 Write-Host "App      http://localhost:8080/health"
 Write-Host "ArgoCD   https://localhost:8081"
 Write-Host ""
-Write-Host "중지:  Get-Job pf-* | Stop-Job; Get-Job pf-* | Remove-Job"
+Write-Host "Stop:  Get-Job pf-* | Stop-Job; Get-Job pf-* | Remove-Job"

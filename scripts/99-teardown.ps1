@@ -12,4 +12,4 @@ kubectl delete namespace sample-app logging monitoring argocd --ignore-not-found
 
 docker rmi sample-app:0.1.0 sample-app:0.2.0 2>$null
 
-Write-Host "teardown 완료"
+Write-Host "teardown done"
