@@ -48,9 +48,12 @@ scripts/                 01~05 실행 + 99 teardown (PowerShell)
 일시 중지 / 재개 (k3s 는 켜둔 채 테스트 스택만):
 ```powershell
 ./scripts/10-pause.ps1     # 워크로드 전부 replicas=0 (원래 값은 .pause-state.json 에 저장)
-./scripts/11-resume.ps1    # 저장된 값으로 복원
+./scripts/11-resume.ps1    # 복원 → Ready 대기 → port-forward 자동 시작
 ```
-전체를 내리려면 Rancher Desktop 자체를 종료 — 재실행 시 파드는 자동 재생성됨.
+- `11-resume.ps1` 은 `.pause-state.json` 이 있으면 스케일 복원 후 대기, 없으면 **port-forward 만 재시작**
+  (창을 닫아 포트포워딩이 죽었을 때 다시 실행해도 안전 — 여러 번 실행 OK).
+- port-forward 는 실행한 PowerShell 창이 열려 있는 동안만 유지됨.
+- 전체를 내리려면 Rancher Desktop 자체를 종료 — 재실행 시 파드는 자동 재생성됨.
 
 ## 검증 (PLAN-rancher.md Step 대응)
 
